@@ -22,4 +22,23 @@
             document.getElementById("navlinks").classList.toggle("active");
         }
 
-        
+    
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e295b',
+                            900: '#0f172a',
+                            950: '#0a0e1a',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+  

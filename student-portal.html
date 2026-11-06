@@ -3,124 +3,2322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="divinegracestyles.css" />
-    <script src="divinegrace.js" defer></script>
-    <title>Divine Grace School</title>
+    <title>Divine Grace School - Student & Portal Management System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b132b;
+            background-image: radial-gradient(#1c2541 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* PRINT STYLES FOR OFFICIAL REPORT CARD PDF DOWNLOAD */
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+            #report-card-modal,
+            #printable-report-sheet,
+            #printable-report-sheet * {
+                visibility: visible !important;
+            }
+            #report-card-modal {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: visible !important;
+            }
+            #printable-report-sheet {
+                box-shadow: none !important;
+                border: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 20px !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between">
 
-    
-
-   <div class="hero-container">
-        <!-- Background Slider Images (4 Slides) -->
-        <!-- Slide 1 (Active by default) -->
-        <div class="slide active" style="background-image: url('Images/frontRangePictureSliderOne.jpg');"></div>
-        <!-- Slide 2 -->
-        <div class="slide" style="background-image: url('Images/frontRangePictureSliderTwo.jpg');"></div>
-        <!-- Slide 3 -->
-        <div class="slide" style="background-image: url('Images/frontRangePictureSliderThree.jpg');"></div>
-        <!-- Slide 4 -->
-        <div class="slide" style="background-image: url('Images/frontRangePictureSliderFour.jpg');"></div>
-
-        <!-- Overlay to darken the background slightly -->
-        <div class="overlay"></div>
-
-        <!-- Navigation Top Bar -->
-        <header>
-
-    
-            <div class="nav-links" id="navlinks">
-                <a href="index.html">Home</a>
-
-                <div class="dropdown">
-                <a href="#" class="dropbtn"><div class="about">About &#9662;</div></a>
-                <!-- The Dropdown Menu -->
-      <div class="dropdown-content">
-        <a href="about-us.html">About Us</a>
-        <a href="mission-vision.html">Mission & Vision</a>
-        <a href="message-chairman.html">Message From The Chairman</a>
-        <a href="message-principal.html">Message From The Principal</a>
-        <a href="message-vc.html">Message From The Vice Principal</a>
-      </div>
-    </div>
-            
-
-            <div class="dropdown">
-            <a href="#" class="dropbtn"><div class="admission">Admissions &#9662;</div><!--admission--></a>
-            <!-- The Dropdown Menu -->
-      <div class="dropdown-content">
-        <a href="/requirements">Requirements</a>
-        <a href="/tuition">Tuition & Fees</a>
-      </div>
-    </div>
-    </div><!--end of nav-links-->
-
-
-
-            <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-            
-            <!-- Replace this div with an actual <img> tag for your logo if preferred -->
-            <div class="logo"></div>
-            
-            <div class="nav-links" id="navlinks">
-                <a href="academics.html">Academics</a>
-                <a href="student-life.html">Student Life</a>
-                <a href="contact.html">Contact</a>
+    <!-- TOP ANNOUNCEMENT & PORTAL SWITCHER BAR -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center text-xs border-b border-slate-800/60">
+            <div class="flex items-center gap-2 text-amber-400 font-medium">
+                <i class="fa-solid font-bold fa-graduation-cap"></i>
+                <span>Admissions open for 2026/2027 Academic Session (KG 1 to SS 3)</span>
             </div>
-        </header>
+            <div class="flex items-center gap-4 text-slate-400">
+                <span><i class="fa-solid fa-phone text-amber-500 mr-1"></i> +234 (0) 803 000 9988</span>
+                <span><i class="fa-solid fa-envelope text-amber-500 mr-1"></i> portal@divinegrace.edu.ng</span>
+            </div>
+        </div>
 
-        <!-- Main Hero Text and Button -->
-        <div class="hero-content">
-            <h1>Welcome to Divine Grace School Portal</h1>
-           
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <!-- BRAND LOGO -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-amber-500/20">
+                    <i class="fa-solid fa-cross"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg text-white tracking-wide uppercase">DIVINE GRACE SCHOOL</h1>
+                    <p class="text-[10px] text-amber-400 tracking-widest font-bold uppercase">KNOWLEDGE, GRACE & EXCELLENCE</p>
+                </div>
+            </div>
+
+            <!-- PORTAL ROLE NAVIGATION SWITCHER -->
+            <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-full border border-slate-800">
+                <button id="nav-btn-student" onclick="switchPortal('student')" class="px-4 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 bg-amber-500 text-slate-900 shadow cursor-pointer">
+                    <i class="fa-solid fa-user-graduate"></i> Student Portal
+                </button>
+                <button id="nav-btn-teacher" onclick="switchPortal('teacher')" class="px-4 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                    <i class="fa-solid fa-chalkboard-user"></i> Teacher Portal
+                </button>
+                <button id="nav-btn-admin" onclick="switchPortal('admin')" class="px-4 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                    <i class="fa-solid fa-crown"></i> Admin / Proprietor
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="showLoginModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 transition">
+                    Sign In
+                </button>
+                <button onclick="navigateToSignUp()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 hover:bg-amber-400 transition shadow">
+                    Enroll Student
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER FOR PORTALS -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+
+        <!-- ===================================== -->
+        <!-- 1. STUDENT PORTAL SECTION -->
+        <!-- ===================================== -->
+        <section id="section-student" class="space-y-6">
+            
+            <!-- STUDENT SIGNUP & SIGNIN CARD -->
+            <div id="student-reg-card" class="max-w-3xl mx-auto bg-slate-900/90 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md">
+                
+                <!-- TAB HEADERS -->
+                <div class="flex justify-center border-b border-slate-800 pb-4 mb-6 gap-4">
+                    <button id="tab-btn-signup" onclick="toggleRegTab('signup')" class="py-2 px-6 rounded-full font-bold text-sm bg-amber-500 text-slate-900 shadow">
+                        <i class="fa-solid fa-user-plus mr-2"></i>New Admission Sign Up
+                    </button>
+                    <button id="tab-btn-signin" onclick="toggleRegTab('signin')" class="py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i>Student Login
+                    </button>
+                </div>
+
+                <!-- SIGN UP FORM -->
+                <form id="student-signup-form" onsubmit="handleStudentSignUp(event)" class="space-y-6">
+                    <div class="text-center space-y-1">
+                        <h2 class="text-2xl font-black text-white">Student Online Registration</h2>
+                        <p class="text-xs text-slate-400">Enrollment for Nursery, Primary, JSS & SSS Cadets</p>
+                    </div>
+
+                    <!-- AUTHORIZATION CODE -->
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 space-y-2">
+                        <label class="block text-xs font-extrabold text-amber-400 tracking-wider uppercase">
+                            <i class="fa-solid fa-key mr-1"></i> Mandatory Enrollment Authorization Code
+                        </label>
+                        <input type="text" id="reg-auth-code" required placeholder="ENTER CODE GENERATED BY SCHOOL ADMIN (E.G. DGS-STU-9482-XK)" 
+                            class="w-full bg-slate-950 border border-amber-500/40 rounded-xl px-4 py-3 text-sm text-amber-300 placeholder-slate-600 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500 uppercase">
+                        <p class="text-[11px] text-amber-300/70">* Contact the school office or proprietor to receive your valid enrollment code before signing up.</p>
+                    </div>
+
+                    <!-- AUTO-GENERATED ADMISSION ID -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 block">Auto-Generated Admission ID</span>
+                            <span id="admission-id-preview" class="text-xl font-black text-white font-mono">DGS/2026/SS3/1144</span>
+                        </div>
+                        <span class="bg-slate-800 text-amber-400 text-xs px-3 py-1 rounded-full font-bold border border-slate-700">
+                            <i class="fa-solid fa-shield-halved mr-1"></i> Official Student Tag
+                        </span>
+                    </div>
+
+                    <!-- PERSONAL DATA FIELDS -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name (Surname First)</label>
+                            <input type="text" id="reg-fullname" required placeholder="e.g. Adebayo Blessing" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Class Grade (KG 1 to SS 3)</label>
+                            <select id="reg-class" onchange="updateAdmissionIdPreview()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <!-- Dynamic Options Populated by JS -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Date of Birth</label>
+                            <input type="date" id="reg-dob" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Gender</label>
+                            <select id="reg-gender" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Parent / Guardian Name</label>
+                            <input type="text" id="reg-guardian-name" required placeholder="e.g. Mr. & Mrs. Adebayo" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Guardian Phone No.</label>
+                            <input type="tel" id="reg-guardian-phone" required placeholder="+234 800 000 0000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                            <input type="email" id="reg-email" required placeholder="adeyemie90@yahoo.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Create Password</label>
+                            <input type="password" id="reg-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                    </div>
+
+                    <!-- COMPULSORY PHOTO UPLOAD -->
+                    <div class="border-2 border-dashed border-amber-500/40 rounded-2xl p-4 bg-slate-950/40 text-center space-y-3">
+                        <div class="flex justify-center items-center gap-2 text-amber-400 font-bold text-xs uppercase">
+                            <i class="fa-solid fa-camera"></i> Compulsory Passport Photograph (Exact School Uniform Only)
+                        </div>
+                        <p class="text-xs text-slate-400">Upload a clear passport photograph wearing the official Divine Grace School uniform.</p>
+                        
+                        <div class="flex justify-center items-center gap-4 py-2">
+                            <img id="photo-preview" src="https://placehold.co/120x120/1e293b/f59e0b?text=Uniform+Passport" alt="Student Passport" class="w-24 h-24 rounded-2xl object-cover border-2 border-amber-500 shadow-md">
+                        </div>
+
+                        <div class="flex justify-center gap-3">
+                            <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-700">
+                                <i class="fa-solid fa-upload"></i> Upload Uniform Photo
+                                <input type="file" id="reg-photo-file" accept="image/*" onchange="previewUploadedPhoto(event)" class="hidden">
+                            </label>
+                            <button type="button" onclick="useSampleUniformPhoto()" class="bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-amber-500/40">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Use Sample Uniform Photo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm tracking-wider uppercase transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-circle-check"></i> Complete Registration & Select Subjects
+                    </button>
+                </form>
+
+                <!-- SIGN IN FORM -->
+                <form id="student-signin-form" onsubmit="handleStudentSignIn(event)" class="space-y-4 hidden">
+                    <div class="text-center space-y-1">
+                        <h2 class="text-2xl font-black text-white">Student Portal Login</h2>
+                        <p class="text-xs text-slate-400">Enter your Email or Admission ID and Password to access your profile</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address or Admission ID</label>
+                        <input type="text" id="login-identifier" required placeholder="adeyemie90@yahoo.com or DGS/2026/Primary4/2769" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                        <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm transition shadow flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- STUDENT DASHBOARD (HIDDEN UNTIL LOGIN/REGISTRATION) -->
+            <div id="student-dashboard" class="space-y-6 hidden">
+                
+                <!-- STUDENT HEADER INFO -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-wrap md:flex-nowrap justify-between items-center gap-6 shadow-xl">
+                    <div class="flex items-center gap-4">
+                        <img id="dash-student-photo" src="" alt="Student Profile" class="w-20 h-20 rounded-2xl object-cover border-2 border-amber-500 shadow">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 id="dash-student-name" class="text-xl font-black text-white">Adebayo Blessing</h2>
+                                <span id="dash-student-class" class="bg-amber-500/20 text-amber-400 font-extrabold text-xs px-2.5 py-0.5 rounded-full border border-amber-500/30">SS 3</span>
+                            </div>
+                            <p id="dash-student-id" class="text-xs text-slate-400 font-mono mt-1">DGS/2026/SS3/1144</p>
+                            <p id="dash-student-email" class="text-xs text-slate-500">adeyemie90@yahoo.com</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button onclick="handleStudentLogout()" class="px-4 py-2 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold rounded-xl border border-rose-500/40 transition">
+                            <i class="fa-solid fa-power-off mr-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBJECT REGISTRATION & SCORES REPORT PANEL -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6 shadow-xl">
+                    <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-lg font-black text-white flex items-center gap-2">
+                                <i class="fa-solid fa-book-bookmark text-amber-500"></i> Registered Subjects & Performance Card
+                            </h3>
+                            <p class="text-xs text-slate-400">Select your term subjects below. Permanent locking applies once submitted.</p>
+                        </div>
+                        <div id="subject-lock-badge" class="px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 rounded-full text-xs font-extrabold flex items-center gap-1.5">
+                            <i class="fa-solid fa-lock-open"></i> Editable (Draft State)
+                        </div>
+                    </div>
+
+                    <!-- SUBJECT SELECTION GRID -->
+                    <div id="student-subject-selection-container" class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <label class="text-xs font-bold text-slate-300 uppercase tracking-wider">Select Term Curriculum Subjects:</label>
+                            <span id="selected-subject-count" class="text-xs font-mono font-bold text-amber-400">0 Selected</span>
+                        </div>
+
+                        <!-- DYNAMIC SUBJECT CHECKBOXES -->
+                        <div id="student-subject-checkbox-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <!-- Populated via JS -->
+                        </div>
+
+                        <div id="subject-submit-action-area" class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+                            <button onclick="submitStudentSubjects()" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl transition shadow flex items-center gap-2">
+                                <i class="fa-solid fa-lock"></i> Finalize & Lock Subject Registration
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- RE-ENABLE EDITING FEE PROMPT (IF LOCKED) -->
+                    <div id="unlock-fee-banner" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
+                                <i class="fa-solid fa-lock text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-amber-300">Subjects Are Locked</h4>
+                                <p class="text-xs text-slate-400">To edit or add registered subjects, a modifications fee of <strong>₦5,000</strong> is required.</p>
+                            </div>
+                        </div>
+                        <button onclick="openUnlockPaymentModal()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase rounded-xl transition shadow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-credit-card"></i> Pay ₦5,000 to Edit Subjects
+                        </button>
+                    </div>
+
+                    <!-- STUDENT ACADEMIC REPORT TABLE -->
+                    <div class="space-y-4 pt-4 border-t border-slate-800">
+                        <div class="flex flex-wrap justify-between items-center gap-4">
+                            <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-chart-bar text-amber-400"></i> Term Gradebook & Approved Scores
+                            </h4>
+                            <button onclick="checkAndOpenReportCard('report')" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase rounded-xl transition shadow flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-file-pdf"></i> Download Official Report Card
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3">Subject Name</th>
+                                        <th class="p-3">Homework (10)</th>
+                                        <th class="p-3">Test (20)</th>
+                                        <th class="p-3">Exam (70)</th>
+                                        <th class="p-3">Total (100)</th>
+                                        <th class="p-3">Term Grade</th>
+                                        <th class="p-3">Teacher Notes & Remarks</th>
+                                        <th class="p-3">Approval Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="student-scores-table-body" class="divide-y divide-slate-800/60 bg-slate-900/50">
+                                    <tr>
+                                        <td colspan="8" class="p-4 text-center text-slate-500 italic">No registered subjects or scores published yet.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- 2. TEACHER PORTAL SECTION -->
+        <!-- ===================================== -->
+        <section id="section-teacher" class="space-y-6 hidden">
+            
+            <!-- TEACHER AUTHENTICATION CARD -->
+            <div id="teacher-auth-card" class="max-w-3xl mx-auto bg-slate-900/90 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md">
+                
+                <div class="flex justify-center border-b border-slate-800 pb-4 mb-6 gap-4">
+                    <button id="teacher-tab-btn-signin" onclick="toggleTeacherAuthTab('signin')" class="py-2 px-6 rounded-full font-bold text-sm bg-indigo-500 text-white shadow">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i>Teacher Sign In
+                    </button>
+                    <button id="teacher-tab-btn-signup" onclick="toggleTeacherAuthTab('signup')" class="py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-user-plus mr-2"></i>New Teacher Registration
+                    </button>
+                </div>
+
+                <!-- TEACHER SIGN IN FORM -->
+                <form id="teacher-signin-form" onsubmit="handleTeacherSignIn(event)" class="space-y-4">
+                    <div class="text-center space-y-1">
+                        <h2 class="text-2xl font-black text-white">Teacher Portal Access</h2>
+                        <p class="text-xs text-slate-400">Sign in to record and manage student term assessment scores</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                        <input type="email" id="teacher-login-email" required placeholder="teacher@divinegrace.edu.ng" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                        <input type="password" id="teacher-login-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm transition shadow flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login to Teacher Desk
+                    </button>
+                </form>
+
+                <!-- TEACHER SIGN UP FORM -->
+                <form id="teacher-signup-form" onsubmit="handleTeacherSignUp(event)" class="space-y-6 hidden">
+                    <div class="text-center space-y-1">
+                        <h2 class="text-2xl font-black text-white">Teacher Portal Registration</h2>
+                        <p class="text-xs text-slate-400">Configure your teacher profile, subject specializations & class allocations</p>
+                    </div>
+
+                    <!-- TEACHER CODE -->
+                    <div class="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-4 space-y-2">
+                        <label class="block text-xs font-extrabold text-indigo-400 tracking-wider uppercase">
+                            <i class="fa-solid fa-key mr-1"></i> Mandatory Teacher Authorization Code
+                        </label>
+                        <input type="text" id="teacher-reg-auth-code" required placeholder="ENTER CODE GENERATED BY SCHOOL OWNER (E.G. DGS-TCH-4812-AB)" 
+                            class="w-full bg-slate-950 border border-indigo-500/40 rounded-xl px-4 py-3 text-sm text-indigo-300 placeholder-slate-600 font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 uppercase">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name (Title & Name)</label>
+                            <input type="text" id="teacher-reg-fullname" required placeholder="e.g. Dr. O. Samuel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                            <input type="email" id="teacher-reg-email" required placeholder="samuel@divinegrace.edu.ng" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                            <input type="password" id="teacher-reg-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Employment Type</label>
+                            <select id="teacher-reg-employment-type" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Full-Time Staff">Full-Time Staff</option>
+                                <option value="Part-Time / Visiting Educator">Part-Time / Visiting Educator</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- CLASS ASSIGNMENTS MULTI-SELECT -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Assigned Classes (Select all that apply):</label>
+                        <div id="teacher-class-checkboxes" class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-950 p-3 rounded-2xl border border-slate-800 max-h-40 overflow-y-auto">
+                            <!-- JS Populated Classes -->
+                        </div>
+                    </div>
+
+                    <!-- SUBJECT ASSIGNMENTS MULTI-SELECT -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Assigned Teaching Subjects:</label>
+                            <button type="button" onclick="toggleSelectAllTeacherSubjects()" class="text-xs text-indigo-400 hover:underline">Select All Subjects</button>
+                        </div>
+                        <div id="teacher-subject-checkboxes" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 bg-slate-950 p-3 rounded-2xl border border-slate-800 max-h-48 overflow-y-auto">
+                            <!-- JS Populated Subjects -->
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm tracking-wider uppercase transition shadow flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-check"></i> Register Teacher Profile & Access Desk
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- TEACHER DASHBOARD & GRADEBOOK DESK -->
+            <div id="teacher-dashboard" class="space-y-6 hidden">
+                
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-wrap justify-between items-center gap-4 shadow-xl">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-2xl border border-indigo-500/40">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 id="dash-teacher-name" class="text-xl font-black text-white">Dr. O. Samuel</h2>
+                                <span id="dash-teacher-type" class="bg-indigo-500/20 text-indigo-300 font-bold text-xs px-2.5 py-0.5 rounded-full border border-indigo-500/30">Full-Time Staff</span>
+                            </div>
+                            <p id="dash-teacher-classes" class="text-xs text-slate-400 mt-1">Assigned Classes: JSS 1, SS 3</p>
+                            <p id="dash-teacher-subjects" class="text-xs text-slate-500">Subjects: Mathematics, Basic Science</p>
+                        </div>
+                    </div>
+                    <button onclick="handleTeacherLogout()" class="px-4 py-2 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold rounded-xl border border-rose-500/40 transition">
+                        <i class="fa-solid fa-power-off mr-1"></i> Teacher Logout
+                    </button>
+                </div>
+
+                <!-- GRADEBOOK ENTRY FORM -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6 shadow-xl">
+                    <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-lg font-black text-white flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square text-indigo-400"></i> Subject Assessment Gradebook
+                            </h3>
+                            <p class="text-xs text-slate-400">Input student scores for administrative approval and release.</p>
+                        </div>
+                    </div>
+
+                    <!-- CLASS & SUBJECT FILTER -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Select Academic Term:</label>
+                            <select id="teacher-filter-term" onchange="renderTeacherGradebook()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-amber-400 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="1st Term" selected>1st Term</option>
+                                <option value="2nd Term">2nd Term</option>
+                                <option value="3rd Term">3rd Term</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Filter by Class Grade:</label>
+                            <select id="teacher-filter-class" onchange="renderTeacherGradebook()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <!-- Populated dynamically based on teacher assignments -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Filter by Teaching Subject:</label>
+                            <select id="teacher-filter-subject" onchange="renderTeacherGradebook()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <!-- Populated dynamically based on teacher assignments -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- STUDENTS SCORE ENTRY TABLE -->
+                    <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3">Student Name</th>
+                                    <th class="p-3">Admission ID</th>
+                                    <th class="p-3">Homework (Max 10)</th>
+                                    <th class="p-3">Test (Max 20)</th>
+                                    <th class="p-3">Exam (Max 70)</th>
+                                    <th class="p-3">Teacher Assessment Notes</th>
+                                    <th class="p-3 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacher-gradebook-table-body" class="divide-y divide-slate-800/60 bg-slate-900/50">
+                                <tr>
+                                    <td colspan="7" class="p-4 text-center text-slate-500 italic">Select a class and subject to display enrolled students.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- 3. SCHOOL OWNER / ADMIN SECTION -->
+        <!-- ===================================== -->
+        <section id="section-admin" class="space-y-6 hidden">
+            
+            <!-- ADMIN AUTHENTICATION CARD (IF NOT LOGGED IN) -->
+            <div id="admin-auth-card" class="max-w-2xl mx-auto bg-slate-900/90 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md space-y-6">
+                
+                <div class="flex justify-center border-b border-slate-800 pb-4 gap-4">
+                    <button id="admin-tab-btn-signin" onclick="toggleAdminAuthTab('signin')" class="py-2 px-6 rounded-full font-bold text-sm bg-amber-500 text-slate-950 shadow">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i>Admin Sign In
+                    </button>
+                    <button id="admin-tab-btn-signup" onclick="toggleAdminAuthTab('signup')" class="py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-user-plus mr-2"></i>Register Admin / Sub-Admin
+                    </button>
+                </div>
+
+                <!-- ADMIN SIGN IN FORM -->
+                <form id="admin-signin-form" onsubmit="handleAdminSignIn(event)" class="space-y-4">
+                    <div class="text-center space-y-1">
+                        <h2 class="text-2xl font-black text-white">Administrative Portal Access</h2>
+                        <p class="text-xs text-slate-400">Sign in as Primary Owner / Proprietor or Authorized Sub-Admin</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Admin Email Address</label>
+                        <input type="email" id="admin-login-email" required placeholder="owner@divinegrace.edu.ng" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                        <input type="password" id="admin-login-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm transition shadow flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login to Control Panel
+                    </button>
+                </form>
+
+                <!-- ADMIN SIGN UP FORM -->
+                <form id="admin-signup-form" onsubmit="handleAdminSignUp(event)" class="space-y-4 hidden">
+                    <div class="text-center space-y-1">
+                        <h2 class="text-2xl font-black text-white">Admin Account Registration</h2>
+                        <p id="admin-reg-subtitle" class="text-xs text-amber-400 font-bold">First admin registering will automatically become Primary Owner Mrs. Ayomide / Founder.</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+                        <input type="text" id="admin-reg-fullname" required placeholder="e.g. Chief Proprietor Adebayo" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                        <input type="email" id="admin-reg-email" required placeholder="proprietor@divinegrace.edu.ng" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Create Password</label>
+                        <input type="password" id="admin-reg-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm transition shadow flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user-shield"></i> Create Admin Account
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- ADMIN DASHBOARD PANEL (SHOWN ONCE LOGGED IN) -->
+            <div id="admin-dashboard-panel" class="space-y-6 hidden">
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6 shadow-xl">
+                    <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold border border-amber-500/40">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h2 id="dash-admin-name" class="text-xl font-black text-white">Chief Proprietor</h2>
+                                    <span id="dash-admin-role" class="bg-amber-500/20 text-amber-400 font-extrabold text-xs px-2.5 py-0.5 rounded-full border border-amber-500/30">Primary Owner</span>
+                                </div>
+                                <p id="dash-admin-email" class="text-xs text-slate-400">owner@divinegrace.edu.ng</p>
+                            </div>
+                        </div>
+                        <button onclick="handleAdminLogout()" class="px-4 py-2 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold rounded-xl border border-rose-500/40 transition">
+                            <i class="fa-solid fa-power-off mr-1"></i> Admin Logout
+                        </button>
+                    </div>
+
+                    <!-- SUB-ADMIN APPROVAL REQUESTS (PRIMARY OWNER EXCLUSIVE) -->
+                    <div id="sub-admin-management-card" class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
+                        <h3 class="text-xs font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-users-gear"></i> Sub-Admin Access & Deletion Desk (Owner Exclusive)
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-900 text-slate-400 uppercase font-bold">
+                                    <tr>
+                                        <th class="p-2.5">Sub-Admin Name</th>
+                                        <th class="p-2.5">Email</th>
+                                        <th class="p-2.5">Status</th>
+                                        <th class="p-2.5 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sub-admin-approval-table" class="divide-y divide-slate-800/60">
+                                    <!-- JS Rendered -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- CODE GENERATION PANELS -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- STUDENT CODE GENERATOR -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
+                            <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-key"></i> Generate Student Admission Code
+                            </h3>
+                            <p class="text-xs text-slate-400">Create single-use verification keys required by new students for signup.</p>
+                            <button onclick="generateNewAccessCode('student')" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase rounded-xl transition shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus-circle"></i> Generate Student Key (DGS-STU-xxxx-XX)
+                            </button>
+                        </div>
+
+                        <!-- TEACHER CODE GENERATOR -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-user-lock"></i> Generate Teacher Registration Code
+                            </h3>
+                            <p class="text-xs text-slate-400">Create access codes to authorize registration of full-time & visiting teachers.</p>
+                            <button onclick="generateNewAccessCode('teacher')" class="w-full py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-xs uppercase rounded-xl transition shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus-circle"></i> Generate Teacher Key (DGS-TCH-xxxx-XX)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ACTIVE AUTHORIZATION CODES LIST -->
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Active System Authorization Codes</h4>
+                        <div id="admin-codes-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                            <!-- JS Rendered -->
+                        </div>
+                    </div>
+
+                    <!-- TEACHER STAFF ROSTER & MANAGEMENT DESK (NEW) -->
+                    <div class="space-y-4 pt-6 border-t border-slate-800">
+                        <div class="flex flex-wrap justify-between items-center gap-4">
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-chalkboard-user text-indigo-400"></i> Registered Teachers & Staff Management Roster
+                            </h3>
+                            <button id="btn-purge-all-teachers" onclick="purgeAllTeachers()" class="px-3 py-1.5 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 font-bold rounded-lg text-xs border border-rose-500/30 transition cursor-pointer flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> Delete All Teachers
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3">Teacher Name</th>
+                                        <th class="p-3">Email</th>
+                                        <th class="p-3">Employment Type</th>
+                                        <th class="p-3">Assigned Classes</th>
+                                        <th class="p-3">Teaching Subjects</th>
+                                        <th class="p-3 text-right">Owner Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-teachers-table" class="divide-y divide-slate-800/60 bg-slate-900/50">
+                                    <!-- JS Rendered -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- STUDENT FEES & PAYMENT STATUS DIRECTORY -->
+                    <div class="space-y-4 pt-6 border-t border-slate-800">
+                        <div class="flex flex-wrap justify-between items-center gap-4">
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-receipt text-amber-400"></i> Student Directory & Fee Acknowledgment Desk
+                            </h3>
+                            <button id="btn-purge-all-students" onclick="purgeAllStudents()" class="px-3 py-1.5 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 font-bold rounded-lg text-xs border border-rose-500/30 transition cursor-pointer flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> Delete All Students
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3">Student Name</th>
+                                        <th class="p-3">Admission ID</th>
+                                        <th class="p-3">Class</th>
+                                        <th class="p-3">Tuition Fee Status (Total vs Paid)</th>
+                                        <th class="p-3">Report Access</th>
+                                        <th class="p-3 text-right">Owner Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-student-payments-table" class="divide-y divide-slate-800/60 bg-slate-900/50">
+                                    <!-- JS Rendered -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- PENDING GRADE APPROVALS & EDITING DESK -->
+        <!-- STUDENT ACADEMIC REPORT TABLE -->
+                    <div class="space-y-4 pt-4 border-t border-slate-800">
+                        <div class="flex flex-wrap justify-between items-center gap-4">
+                            <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-chart-bar text-amber-400"></i> Term Gradebook & Approved Scores
+                            </h4>
+                            <div class="flex items-center gap-2">
+                                <button onclick="purgeOrphanSubmissions()" class="px-3 py-1.5 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 font-bold rounded-lg text-xs border border-rose-500/30 transition cursor-pointer flex items-center gap-1">
+                                    <i class="fa-solid fa-broom"></i> Clear Unowned / Orphan Scores
+                                </button>
+                                <button onclick="checkAndOpenReportCard()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase rounded-xl transition shadow flex items-center gap-2 cursor-pointer">
+                                    <i class="fa-solid fa-file-pdf"></i> Download Official Report Card
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3">Student Name</th>
+                                        <th class="p-3">Class & Subject</th>
+                                        <th class="p-3">Teacher</th>
+                                        <th class="p-3">Homework (10) / Test (20) / Exam (70)</th>
+                                        <th class="p-3">Teacher Notes & Owner Override</th>
+                                        <th class="p-3">Status</th>
+                                        <th class="p-3 text-right">Owner Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-pending-scores-table-body" class="divide-y divide-slate-800/60 bg-slate-900/50">
+                                    <!-- JS Rendered -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- UNLOCK FEE PAYMENT MODAL -->
+    <div id="payment-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <h3 class="font-bold text-white text-base flex items-center gap-2">
+                    <i class="fa-solid fa-credit-card text-amber-500"></i> Subject Modification Gateway
+                </h3>
+                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-center space-y-2">
+                <span class="text-xs uppercase text-slate-400 font-bold block">Fee Amount Required</span>
+                <span class="text-3xl font-black text-amber-400 font-mono">₦5,000.00</span>
+                <p class="text-[11px] text-slate-500">Official Portal Re-activation Fee for Subject Choice Modification</p>
+            </div>
+            <button onclick="processUnlockPayment()" class="w-full py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider transition shadow flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock-open"></i> Simulate Paystack Payment (₦5,000)
+            </button>
         </div>
     </div>
 
-
-
-
-
-<footer class="footer">
-    <div>
-        <h3>About Divine Grace</h3>
-        <p>Providing exceptional education through innovative curriculum, dedicated faculty, and a community-focused learning environment.</p>
+    <!-- TUITION FEE RESTRICTION NOTICE MODAL -->
+    <div id="tuition-restriction-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-rose-500/40 rounded-3xl max-w-md w-full p-6 space-y-6 shadow-2xl text-center">
+            <div class="w-16 h-16 bg-rose-500/20 text-rose-400 rounded-2xl mx-auto flex items-center justify-center text-3xl border border-rose-500/40">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-lg font-black text-white">Report Card Access Restricted</h3>
+                <p class="text-xs text-slate-300">Terminal report cards and cumulative grades are locked until school tuition fees are paid in full or special clearance is granted by the Proprietor.</p>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 text-left text-xs font-mono">
+                <div class="flex justify-between text-slate-400"><span>Total School Fee:</span><span id="res-total-fee" class="text-white font-bold">₦150,000</span></div>
+                <div class="flex justify-between text-slate-400"><span>Amount Paid:</span><span id="res-paid-fee" class="text-amber-400 font-bold">₦60,000</span></div>
+                <div class="flex justify-between text-slate-400 border-t border-slate-800 pt-2"><span>Outstanding Balance:</span><span id="res-bal-fee" class="text-rose-400 font-bold">₦90,000</span></div>
+            </div>
+            <button onclick="closeTuitionRestrictionModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase rounded-xl transition cursor-pointer">
+                I Understand (Close)
+            </button>
+        </div>
     </div>
 
-    <div>
-        <h3>Services</h3>
-        <ul>
-            <li>Overview</li>
-            <li>Why us</li>
-            <li>Awards & Recognitions</li>
-            <li>Teacher</li>
-            <li>Client Reviews</li>
-        </ul>
+    <!-- EDIT STUDENT TUITION MODAL (ADMIN) -->
+    <div id="edit-tuition-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <h3 class="font-bold text-white text-base flex items-center gap-2">
+                    <i class="fa-solid fa-receipt text-amber-500"></i> Manage Student Tuition & Fees
+                </h3>
+                <button onclick="closeEditTuitionModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="handleSaveStudentTuition(event)" class="space-y-4">
+                <input type="hidden" id="tuition-edit-student-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Student Name</label>
+                    <input type="text" id="tuition-edit-name" disabled class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-400 font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Total Termly/Session Fee (₦)</label>
+                    <input type="number" id="tuition-edit-total" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Amount Paid So Far (₦)</label>
+                    <input type="number" id="tuition-edit-paid" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-amber-400 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+                <div class="flex items-center gap-2 pt-2">
+                    <input type="checkbox" id="tuition-edit-grant" class="w-4 h-4 text-amber-500 rounded bg-slate-950 border-slate-700">
+                    <label for="tuition-edit-grant" class="text-xs font-semibold text-amber-400 cursor-pointer">Grant Special Owner Access to Report Card (Bypass Balance Check)</label>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase rounded-xl transition shadow cursor-pointer">
+                    Save Tuition Record
+                </button>
+            </form>
+        </div>
     </div>
 
-    <div>
-        <h3>Information</h3>
-        <ul>
-            <li>My account</li>
-            <li>Order History</li>
-            <li>Kids Study</li>
-            <li>News</li>
-            <li>Returns</li>
-        </ul>
+    <!-- OFFICIAL PRINTABLE REPORT CARD MODAL -->
+    <div id="report-card-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto hidden">
+        <div class="max-w-4xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl my-8">
+            <div class="flex flex-wrap justify-between items-center border-b border-slate-800 pb-4 gap-3 no-print">
+                <div class="flex items-center gap-2 text-amber-400 font-extrabold text-sm">
+                    <i class="fa-solid fa-graduation-cap text-base"></i> Official Student Terminal Academic Report
+                </div>
+                <div class="flex items-center gap-3">
+                    <!-- TERM SELECTOR FOR REPORT CARD -->
+                    <div class="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
+                        <label class="text-[11px] font-bold text-slate-400">Select Term:</label>
+                        <select id="report-term-selector" onchange="renderReportCardByTerm()" class="bg-slate-900 text-amber-400 font-extrabold text-xs rounded px-2 py-1 focus:outline-none border border-slate-700">
+                            <option value="1st Term" selected>1st Term Only</option>
+                            <option value="2nd Term">2nd Term Only</option>
+                            <option value="3rd Term">3rd Term (Annual Cumulative)</option>
+                        </select>
+                    </div>
+                    <button onclick="printReportCard()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black rounded-xl transition flex items-center gap-2 shadow cursor-pointer">
+                        <i class="fa-solid fa-print"></i> Print / Save as PDF
+                    </button>
+                    <button onclick="closeReportCardModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+            </div>
+
+            <!-- PRINTABLE SHEET CONTAINER -->
+            <div id="printable-report-sheet" class="bg-white text-slate-950 p-8 rounded-2xl shadow-lg font-sans space-y-6 text-xs border border-slate-200">
+                
+                <!-- SCHOOL OFFICIAL HEADER -->
+                <div class="text-center border-b-2 border-slate-900 pb-4 space-y-1">
+                    <div class="flex justify-center items-center gap-3 mb-1">
+                        <div class="w-12 h-12 rounded-full bg-amber-500 text-slate-950 font-black text-2xl flex items-center justify-center border-2 border-slate-900 shadow">
+                            †
+                        </div>
+                        <h1 class="text-2xl font-black tracking-wider text-slate-900 uppercase">DIVINE GRACE SCHOOL</h1>
+                    </div>
+                    <p class="text-[11px] font-bold text-amber-600 uppercase tracking-widest">KNOWLEDGE, GRACE & EXCELLENCE</p>
+                    <p class="text-[11px] text-slate-600">Plot 12-14 Educational Zone, Victoria Island Annex, Lagos, Nigeria | Tel: +234 (0) 803 000 9988</p>
+                    <div id="rep-sheet-header-term" class="inline-block bg-slate-900 text-white font-black text-xs px-4 py-1 rounded-full uppercase mt-2">
+                        2026/2027 ACADEMIC SESSION - 1ST TERM TERMINAL REPORT CARD
+                    </div>
+                </div>
+
+                <!-- STUDENT BIO SUMMARY & ACADEMIC DATES -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-100 p-4 rounded-xl border border-slate-300 text-[11px] relative">
+                    <div><span class="font-bold text-slate-500 block">STUDENT NAME:</span><span id="rep-student-name" class="font-extrabold text-slate-900 uppercase">Adebayo Blessing</span></div>
+                    <div><span class="font-bold text-slate-500 block">ADMISSION ID:</span><span id="rep-student-id" class="font-mono font-bold text-slate-900">DGS/2026/SS3/1144</span></div>
+                    <div><span class="font-bold text-slate-500 block">CLASS GRADE:</span><span id="rep-student-class" class="font-extrabold text-slate-900">SS 3</span></div>
+                    <div><span class="font-bold text-slate-500 block">GENDER:</span><span id="rep-student-gender" class="font-extrabold text-slate-900">Male</span></div>
+                    <div class="col-span-2 md:col-span-2"><span class="font-bold text-slate-500 block">TERM DURATION / DATES:</span><span id="rep-term-dates" class="font-bold text-slate-900 font-mono">Monday 14th September 2026 – Monday 21st December 2026</span></div>
+                    <div class="col-span-2 md:col-span-2 flex items-center justify-between">
+                        <div>
+                            <span class="font-bold text-slate-500 block">ACADEMIC SESSION:</span>
+                            <span class="font-bold text-slate-900">2026/2027 Academic Session</span>
+                        </div>
+                        <img id="rep-student-photo-sheet" src="https://placehold.co/120x120/1e293b/f59e0b?text=Passport" alt="Student Uniform Passport" class="w-16 h-16 rounded-xl object-cover border-2 border-slate-900 shadow-sm ml-2">
+                    </div>
+                </div>
+
+                <!-- TEACHER REMARKS & PROPRIETOR SIGNATURE -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-300">
+                    <div class="space-y-1">
+                        <span class="font-bold text-slate-700 block uppercase text-[10px]">Form Teacher's Assessment Comment:</span>
+                        <p id="rep-teacher-comment" class="bg-slate-50 border border-slate-300 p-3 rounded-xl italic text-slate-800 text-[11px] min-h-[50px]">
+                            An outstanding pupil with exceptional academic dedication across all science and technology subjects. Keep up the brilliant performance!
+                        </p>
+                    </div>
+                    <div class="space-y-2 flex flex-col justify-between">
+                        <div>
+                            <span class="font-bold text-slate-700 block uppercase text-[10px]">Proprietor / School Owner Authorization:</span>
+                            <p class="text-slate-600 italic text-[10px]">Approved and officially released under divine authority.</p>
+                        </div>
+                        <div class="flex items-center justify-between border-t border-slate-400 pt-2">
+                            <div>
+                                <p class="font-black text-slate-900 text-xs">Mrs. Ayomide</p>
+                                <p class="text-[9px] text-slate-500">School Owner / Founder, Divine Grace School</p>
+                            </div>
+                            <div class="w-28 h-10 border-2 border-amber-600 rounded-lg bg-amber-50 flex items-center justify-center text-amber-700 font-bold text-[10px] uppercase tracking-wider transform -rotate-2">
+                                <i class="fa-solid fa-stamp mr-1"></i> VERIFIED STAMP
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <div>
-        <h3>Newsletter Subscription</h3>
-        <p style="margin-bottom: 15px;">Enter your email and get latest updates and offers subscribe us</p>
-        <input type="email" placeholder="Enter your email" class="subscribe-box">
-        <button class="btn-subscribe">Subscribe Now!</button>
-    </div>
-</footer>
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-center py-4 text-xs text-slate-500">
+        © 2026 Divine Grace School Student Information & Portal Management System. All Rights Reserved.
+    </footer>
 
-<footer class="footer-bottom">
-    <p>&copy; 2026 Divine Grace School. All rights reserved.</p>
-    <p>designed by <a href="https://www.donemmynaija.com" target="_blank">DONEMMYNAIJA SOFTWARE DEVELOPERS</a></p>
-</footer>
+    <!-- JS ENGINE -->
+    <script>
+        // MASTER CLASS LIST
+        const ALL_CLASSES = [
+            "KG 1", "KG 2", "Nursery 1", "Nursery 2",
+            "Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6",
+            "JSS 1", "JSS 2", "JSS 3",
+            "SS 1", "SS 2", "SS 3"
+        ];
 
+        // COMPREHENSIVE SUBJECT DATABASE
+        const SUBJECT_DATABASE = [
+            "English Studies",
+            "Mathematics & Measurement",
+            "Nigerian Languages (Yoruba)",
+            "Nigerian Languages (Hausa)",
+            "Nigerian Languages (Igbo)",
+            "Basic Science and Technology",
+            "Physical and Health Education (PHE)",
+            "Christian Religious Studies (CRS)",
+            "Islamic Studies (IS)",
+            "Nigerian History",
+            "Social and Citizenship Studies",
+            "Cultural and Creative Arts (CCA)",
+            "Basic Digital Literacy / Computer Studies",
+            "Pre-vocational Studies (Agric & Home Econ)",
+            "French Language",
+            "Arabic Language",
+            "Integrated Science",
+            "Civic Education",
+            "One Trade / Entrepreneurship",
+            "Biology",
+            "Chemistry",
+            "Physics",
+            "Agricultural Science",
+            "Further Mathematics",
+            "Health Education",
+            "Literature-in-English",
+            "Government",
+            "History",
+            "Fine Arts / Creative Arts",
+            "Economics",
+            "Commerce",
+            "Financial Accounting",
+            "Geography",
+            "Programming & AI",
+            "Cybersecurity",
+            "Technical Drawing",
+            "Food & Nutrition"
+        ];
 
+        // APP STATE MANAGEMENT
+        let appState = {
+            activePortal: 'student', // 'student', 'teacher', 'admin'
+            activeStudent: JSON.parse(localStorage.getItem('dgs_active_student')) || null,
+            activeTeacher: JSON.parse(localStorage.getItem('dgs_active_teacher')) || null,
+            activeAdmin: JSON.parse(localStorage.getItem('dgs_active_admin')) || null,
+            admins: JSON.parse(localStorage.getItem('dgs_admins')) || [],
+            codes: JSON.parse(localStorage.getItem('dgs_codes')) || [
+                { code: "DGS-STU-9482-XK", type: "student", status: "Active", createdAt: Date.now() },
+                { code: "DGS-STU-1002-AB", type: "student", status: "Active", createdAt: Date.now() },
+                { code: "DGS-TCH-4812-AB", type: "teacher", status: "Active", createdAt: Date.now() },
+                { code: "DGS-TCH-9931-CD", type: "teacher", status: "Active", createdAt: Date.now() }
+            ],
+            students: JSON.parse(localStorage.getItem('dgs_students')) || [],
+            teachers: JSON.parse(localStorage.getItem('dgs_teachers')) || [],
+            submissions: JSON.parse(localStorage.getItem('dgs_submissions')) || []
+        };
+
+        // DOM CACHE FOR ACCELERATED NAVIGATION PERFORMANCE
+        let domCache = {};
+        let saveTimeout = null;
+
+        function initDOMCache() {
+            domCache = {
+                secStudent: document.getElementById('section-student'),
+                secTeacher: document.getElementById('section-teacher'),
+                secAdmin: document.getElementById('section-admin'),
+                btnStudent: document.getElementById('nav-btn-student'),
+                btnTeacher: document.getElementById('nav-btn-teacher'),
+                btnAdmin: document.getElementById('nav-btn-admin')
+            };
+        }
+
+        // SAFE LOCALSTORAGE WRAPPER TO PREVENT QUOTA EXCEEDED ERRORS
+        function safeSetItem(key, value) {
+            try {
+                localStorage.setItem(key, value);
+            } catch (e) {
+                console.warn("Storage quota limit reached, maintaining in-memory state.", e);
+            }
+        }
+
+        // FIVE DAYS EXPIRATION & AUTO-DELETE CLEANUP UTILITY (5 Days = 5 * 24 * 60 * 60 * 1000 ms)
+        const CODE_EXPIRY_MS = 5 * 24 * 60 * 60 * 1000;
+
+        function purgeExpiredCodes() {
+            if (!appState || !Array.isArray(appState.codes)) return;
+            const now = Date.now();
+            const initialCount = appState.codes.length;
+            
+            // Auto delete any code whose timestamp is older than 5 days (432,000,000 ms)
+            appState.codes = appState.codes.filter(c => {
+                if (!c) return false;
+                const createdTime = c.createdAt || now;
+                const age = now - createdTime;
+                return age < CODE_EXPIRY_MS;
+            });
+
+            if (appState.codes.length !== initialCount) {
+                saveState();
+            }
+        }
+
+        function saveState() {
+            if (saveTimeout) clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                safeSetItem('dgs_codes', JSON.stringify(appState.codes));
+                safeSetItem('dgs_students', JSON.stringify(appState.students));
+                safeSetItem('dgs_teachers', JSON.stringify(appState.teachers));
+                safeSetItem('dgs_admins', JSON.stringify(appState.admins));
+                safeSetItem('dgs_submissions', JSON.stringify(appState.submissions));
+                if (appState.activeStudent) safeSetItem('dgs_active_student', JSON.stringify(appState.activeStudent));
+                else localStorage.removeItem('dgs_active_student');
+                if (appState.activeTeacher) safeSetItem('dgs_active_teacher', JSON.stringify(appState.activeTeacher));
+                else localStorage.removeItem('dgs_active_teacher');
+                if (appState.activeAdmin) safeSetItem('dgs_active_admin', JSON.stringify(appState.activeAdmin));
+                else localStorage.removeItem('dgs_active_admin');
+            }, 50);
+        }
+
+        // PORTAL SWITCHER
+        function switchPortal(portal) {
+            appState.activePortal = portal;
+
+            const activeClass = "px-4 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 bg-amber-500 text-slate-900 shadow cursor-pointer";
+            const inactiveClass = "px-4 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer";
+
+            if (!domCache.secStudent) initDOMCache();
+
+            if (domCache.btnStudent) domCache.btnStudent.className = portal === 'student' ? activeClass : inactiveClass;
+            if (domCache.btnTeacher) domCache.btnTeacher.className = portal === 'teacher' ? activeClass : inactiveClass;
+            if (domCache.btnAdmin) domCache.btnAdmin.className = portal === 'admin' ? activeClass : inactiveClass;
+
+            if (domCache.secStudent) domCache.secStudent.classList.toggle('hidden', portal !== 'student');
+            if (domCache.secTeacher) domCache.secTeacher.classList.toggle('hidden', portal !== 'teacher');
+            if (domCache.secAdmin) domCache.secAdmin.classList.toggle('hidden', portal !== 'admin');
+
+            requestAnimationFrame(() => {
+                if (portal === 'student') {
+                    if (appState.activeStudent) {
+                        renderStudentDashboard();
+                    } else {
+                        const regCard = document.getElementById('student-reg-card');
+                        const dashboard = document.getElementById('student-dashboard');
+                        if (regCard) regCard.classList.remove('hidden');
+                        if (dashboard) dashboard.classList.add('hidden');
+                        populateClassDropdown();
+                    }
+                } else if (portal === 'teacher') {
+                    if (appState.activeTeacher) {
+                        renderTeacherDashboard();
+                    } else {
+                        const authCard = document.getElementById('teacher-auth-card');
+                        const dashboard = document.getElementById('teacher-dashboard');
+                        if (authCard) authCard.classList.remove('hidden');
+                        if (dashboard) dashboard.classList.add('hidden');
+                        renderTeacherSignUpFormFields();
+                    }
+                } else if (portal === 'admin') {
+                    if (appState.activeAdmin) {
+                        renderAdminDashboard();
+                    } else {
+                        const authCard = document.getElementById('admin-auth-card');
+                        const panel = document.getElementById('admin-dashboard-panel');
+                        if (authCard) authCard.classList.remove('hidden');
+                        if (panel) panel.classList.add('hidden');
+                        updateAdminSignUpSubtitle();
+                    }
+                }
+            });
+        }
+
+        // QUICK NAV HELPERS
+        function showLoginModal() {
+            switchPortal('student');
+            toggleRegTab('signin');
+        }
+
+        function navigateToSignUp() {
+            switchPortal('student');
+            toggleRegTab('signup');
+        }
+
+        // WINDOW LOAD INITIALIZATION
+        window.onload = function() {
+            purgeExpiredCodes(); // Auto-clean codes older than 5 days on system load
+            initDOMCache();
+            populateClassDropdown();
+            switchPortal('student');
+        };
+
+        // ADMIN TAB TOGGLE (SIGN IN / SIGN UP)
+        function toggleAdminAuthTab(tab) {
+            const btnSignin = document.getElementById('admin-tab-btn-signin');
+            const btnSignup = document.getElementById('admin-tab-btn-signup');
+            const formSignin = document.getElementById('admin-signin-form');
+            const formSignup = document.getElementById('admin-signup-form');
+
+            if (tab === 'signin') {
+                btnSignin.className = "py-2 px-6 rounded-full font-bold text-sm bg-amber-500 text-slate-950 shadow";
+                btnSignup.className = "py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white";
+                formSignin.classList.remove('hidden');
+                formSignup.classList.add('hidden');
+            } else {
+                btnSignup.className = "py-2 px-6 rounded-full font-bold text-sm bg-amber-500 text-slate-950 shadow";
+                btnSignin.className = "py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white";
+                formSignup.classList.remove('hidden');
+                formSignin.classList.add('hidden');
+                updateAdminSignUpSubtitle();
+            }
+        }
+
+        // UPDATE ADMIN SIGN UP SUBTITLE DEPENDING ON PRIMARY OWNER EXISTENCE
+        function updateAdminSignUpSubtitle() {
+            const subtitle = document.getElementById('admin-reg-subtitle');
+            if (!subtitle) return;
+            const primaryOwner = appState.admins.find(a => a.isPrimary);
+            if (!primaryOwner) {
+                subtitle.innerText = "First admin registering will automatically become Primary Owner Mrs. Ayomide / Founder.";
+                subtitle.className = "text-xs text-amber-400 font-bold";
+            } else {
+                subtitle.innerText = "Register as Sub-Admin. Requires Primary Owner Mrs. Ayomide approval to activate.";
+                subtitle.className = "text-xs text-indigo-400 font-bold";
+            }
+        }
+
+        // ADMIN SIGN UP HANDLER
+        function handleAdminSignUp(e) {
+            e.preventDefault();
+            const fullname = document.getElementById('admin-reg-fullname').value.trim();
+            const email = document.getElementById('admin-reg-email').value.trim().toLowerCase();
+            const password = document.getElementById('admin-reg-password').value;
+
+            if (appState.admins.some(a => a.email.toLowerCase() === email)) {
+                alert("An admin with this email already exists!");
+                return;
+            }
+
+            const isPrimary = appState.admins.length === 0 || !appState.admins.some(a => a.isPrimary);
+
+            const newAdmin = {
+                id: 'ADM-' + Math.floor(1000 + Math.random() * 9000),
+                fullname: isPrimary ? "Mrs. Ayomide (Primary Owner)" : fullname,
+                email: email,
+                password: password,
+                isPrimary: isPrimary,
+                status: isPrimary ? "Approved" : "Pending Approval",
+                createdAt: new Date().toLocaleDateString()
+            };
+
+            appState.admins.push(newAdmin);
+
+            if (isPrimary) {
+                appState.activeAdmin = newAdmin;
+                saveState();
+                alert("Congratulations! Registered as Primary Proprietor & School Owner Mrs. Ayomide.");
+                renderAdminDashboard();
+            } else {
+                saveState();
+                alert("Sub-Admin Registration Submitted! Contact School Owner Mrs. Ayomide to approve your access.");
+                toggleAdminAuthTab('signin');
+            }
+        }
+
+        // ADMIN SIGN IN HANDLER
+        function handleAdminSignIn(e) {
+            e.preventDefault();
+            const email = document.getElementById('admin-login-email').value.trim().toLowerCase();
+            const password = document.getElementById('admin-login-password').value;
+
+            const admin = appState.admins.find(a => a.email.toLowerCase() === email);
+
+            if (!admin) {
+                alert("No Admin account found with this email!");
+                return;
+            }
+
+            if (admin.password !== password) {
+                alert("Invalid password entered.");
+                return;
+            }
+
+            if (!admin.isPrimary && admin.status !== "Approved") {
+                alert("Your Sub-Admin account is pending approval by Primary Owner Mrs. Ayomide.");
+                return;
+            }
+
+            appState.activeAdmin = admin;
+            saveState();
+            renderAdminDashboard();
+        }
+
+        // STUDENT TAB TOGGLE
+        function toggleRegTab(tab) {
+            const btnSignup = document.getElementById('tab-btn-signup');
+            const btnSignin = document.getElementById('tab-btn-signin');
+            const formSignup = document.getElementById('student-signup-form');
+            const formSignin = document.getElementById('student-signin-form');
+
+            if (tab === 'signup') {
+                btnSignup.className = "py-2 px-6 rounded-full font-bold text-sm bg-amber-500 text-slate-900 shadow";
+                btnSignin.className = "py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white";
+                formSignup.classList.remove('hidden');
+                formSignin.classList.add('hidden');
+            } else {
+                btnSignin.className = "py-2 px-6 rounded-full font-bold text-sm bg-amber-500 text-slate-900 shadow";
+                btnSignup.className = "py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white";
+                formSignin.classList.remove('hidden');
+                formSignup.classList.add('hidden');
+            }
+        }
+
+        // TEACHER TAB TOGGLE
+        function toggleTeacherAuthTab(tab) {
+            const btnSignin = document.getElementById('teacher-tab-btn-signin');
+            const btnSignup = document.getElementById('teacher-tab-btn-signup');
+            const formSignin = document.getElementById('teacher-signin-form');
+            const formSignup = document.getElementById('teacher-signup-form');
+
+            if (tab === 'signin') {
+                btnSignin.className = "py-2 px-6 rounded-full font-bold text-sm bg-indigo-500 text-white shadow";
+                btnSignup.className = "py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white";
+                formSignin.classList.remove('hidden');
+                formSignup.classList.add('hidden');
+            } else {
+                btnSignup.className = "py-2 px-6 rounded-full font-bold text-sm bg-indigo-500 text-white shadow";
+                btnSignin.className = "py-2 px-6 rounded-full font-bold text-sm text-slate-400 hover:text-white";
+                formSignup.classList.remove('hidden');
+                formSignin.classList.add('hidden');
+                renderTeacherSignUpFormFields();
+            }
+        }
+
+        // POPULATE CLASS DROPDOWN
+        function populateClassDropdown() {
+            const select = document.getElementById('reg-class');
+            if (!select) return;
+            select.innerHTML = ALL_CLASSES.map(c => `<option value="${c}">${c}</option>`).join('');
+            updateAdmissionIdPreview();
+        }
+
+        // UPDATE ADMISSION ID PREVIEW
+        function updateAdmissionIdPreview() {
+            const classVal = document.getElementById('reg-class')?.value || 'Primary1';
+            const cleanClass = classVal.replace(/\s+/g, '');
+            const randomNum = Math.floor(1000 + Math.random() * 9000);
+            const preview = document.getElementById('admission-id-preview');
+            if (preview) {
+                preview.innerText = `DGS/2026/${cleanClass}/${randomNum}`;
+            }
+        }
+
+        // PASSPORT PHOTO PREVIEW HANDLER WITH CANVAS COMPRESSION
+        function previewUploadedPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 150;
+                    canvas.height = 150;
+                    ctx.drawImage(img, 0, 0, 150, 150);
+                    const compressedUrl = canvas.toDataURL('image/jpeg', 0.7);
+                    const imgEl = document.getElementById('photo-preview');
+                    if (imgEl) imgEl.src = compressedUrl;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function useSampleUniformPhoto() {
+            const imgEl = document.getElementById('photo-preview');
+            if (imgEl) imgEl.src = "https://placehold.co/120x120/1e293b/f59e0b?text=Uniform+Passport";
+        }
+
+        // STUDENT SIGN UP HANDLER
+        function handleStudentSignUp(e) {
+            e.preventDefault();
+            purgeExpiredCodes();
+            const codeInput = document.getElementById('reg-auth-code').value.trim().toUpperCase();
+            
+            const codeObj = appState.codes.find(c => c.code.toUpperCase() === codeInput && c.type === 'student' && c.status === 'Active');
+            if (!codeObj) {
+                alert("Invalid, expired, or used Student Authorization Code! Access codes expire after 5 days. Please get a new code from the School Admin.");
+                return;
+            }
+
+            const fullname = document.getElementById('reg-fullname').value.trim();
+            const classGrade = document.getElementById('reg-class').value;
+            const dob = document.getElementById('reg-dob').value;
+            const gender = document.getElementById('reg-gender').value;
+            const guardianName = document.getElementById('reg-guardian-name').value.trim();
+            const guardianPhone = document.getElementById('reg-guardian-phone').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const password = document.getElementById('reg-password').value;
+            const photo = document.getElementById('photo-preview').src;
+            const admissionId = document.getElementById('admission-id-preview').innerText;
+
+            if (appState.students.some(s => s.email.toLowerCase() === email || s.admissionId === admissionId)) {
+                alert("A student with this Email or Admission ID already exists!");
+                return;
+            }
+
+            codeObj.status = "Used";
+
+            const newStudent = {
+                id: 'STU-' + Math.floor(1000 + Math.random() * 9000),
+                admissionId: admissionId,
+                fullname: fullname,
+                classGrade: classGrade,
+                dob: dob,
+                gender: gender,
+                guardianName: guardianName,
+                guardianPhone: guardianPhone,
+                email: email,
+                password: password,
+                photo: photo,
+                registeredSubjects: [],
+                isLocked: false,
+                totalFee: 150000,
+                paidFee: 0,
+                grantReportAccess: false,
+                createdAt: new Date().toLocaleDateString()
+            };
+
+            appState.students.push(newStudent);
+            appState.activeStudent = newStudent;
+            saveState();
+
+            alert(`Registration Successful! Welcome to Divine Grace School. Your Admission ID is ${admissionId}`);
+            renderStudentDashboard();
+        }
+
+        // STUDENT SIGN IN HANDLER
+        function handleStudentSignIn(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('login-identifier').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+
+            const student = appState.students.find(s => 
+                s.email.toLowerCase() === identifier || 
+                s.admissionId.toLowerCase() === identifier
+            );
+
+            if (!student) {
+                alert("No student found matching this Email or Admission ID!");
+                return;
+            }
+
+            if (student.password !== password) {
+                alert("Invalid password entered.");
+                return;
+            }
+
+            appState.activeStudent = student;
+            saveState();
+            renderStudentDashboard();
+        }
+
+        // LOGOUT HANDLERS
+        function handleStudentLogout() {
+            appState.activeStudent = null;
+            saveState();
+            switchPortal('student');
+        }
+
+        function handleTeacherLogout() {
+            appState.activeTeacher = null;
+            saveState();
+            switchPortal('teacher');
+        }
+
+        function handleAdminLogout() {
+            appState.activeAdmin = null;
+            saveState();
+            switchPortal('admin');
+        }
+
+        // RENDER STUDENT DASHBOARD
+        function renderStudentDashboard() {
+            const student = appState.activeStudent;
+            if (!student) return;
+
+            document.getElementById('student-reg-card').classList.add('hidden');
+            document.getElementById('student-dashboard').classList.remove('hidden');
+
+            document.getElementById('dash-student-name').innerText = student.fullname;
+            document.getElementById('dash-student-class').innerText = student.classGrade;
+            document.getElementById('dash-student-id').innerText = student.admissionId;
+            document.getElementById('dash-student-email').innerText = student.email;
+            document.getElementById('dash-student-photo').src = student.photo || "https://placehold.co/120x120/1e293b/f59e0b?text=Uniform+Passport";
+
+            const lockBadge = document.getElementById('subject-lock-badge');
+            const unlockBanner = document.getElementById('unlock-fee-banner');
+            const submitActionArea = document.getElementById('subject-submit-action-area');
+
+            if (student.isLocked) {
+                lockBadge.className = "px-3 py-1 bg-amber-500/20 border border-amber-500/40 text-amber-400 rounded-full text-xs font-extrabold flex items-center gap-1.5";
+                lockBadge.innerHTML = `<i class="fa-solid fa-lock"></i> Locked (Permanent State)`;
+                unlockBanner.classList.remove('hidden');
+                submitActionArea.classList.add('hidden');
+            } else {
+                lockBadge.className = "px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 rounded-full text-xs font-extrabold flex items-center gap-1.5";
+                lockBadge.innerHTML = `<i class="fa-solid fa-lock-open"></i> Editable (Draft State)`;
+                unlockBanner.classList.add('hidden');
+                submitActionArea.classList.remove('hidden');
+            }
+
+            renderStudentSubjectSelectionGrid();
+            renderStudentScoresTable();
+        }
+
+        // RENDER STUDENT SUBJECT SELECTION GRID
+        function renderStudentSubjectSelectionGrid() {
+            const student = appState.activeStudent;
+            const grid = document.getElementById('student-subject-checkbox-grid');
+            if (!grid || !student) return;
+
+            grid.innerHTML = SUBJECT_DATABASE.map((subj, index) => {
+                const isChecked = student.registeredSubjects.includes(subj);
+                const disabledAttr = student.isLocked ? 'disabled' : '';
+                return `
+                    <label class="flex items-center gap-3 bg-slate-950 p-3 rounded-xl border border-slate-800 ${student.isLocked ? 'opacity-60 cursor-not-allowed' : 'hover:border-amber-500/40 cursor-pointer'} transition">
+                        <input type="checkbox" value="${subj}" ${isChecked ? 'checked' : ''} ${disabledAttr} onchange="onStudentSubjectCheckboxChange()" class="w-4 h-4 text-amber-500 rounded focus:ring-amber-500 bg-slate-900 border-slate-700">
+                        <span class="text-xs font-semibold text-slate-200">${subj}</span>
+                    </label>
+                `;
+            }).join('');
+
+            updateSelectedSubjectCount();
+        }
+
+        function onStudentSubjectCheckboxChange() {
+            const checkedBoxes = Array.from(document.querySelectorAll('#student-subject-checkbox-grid input[type="checkbox"]:checked')).map(cb => cb.value);
+            if (appState.activeStudent) {
+                appState.activeStudent.registeredSubjects = checkedBoxes;
+                const idx = appState.students.findIndex(s => s.id === appState.activeStudent.id);
+                if (idx !== -1) appState.students[idx].registeredSubjects = checkedBoxes;
+                saveState();
+            }
+            updateSelectedSubjectCount();
+        }
+
+        function updateSelectedSubjectCount() {
+            const count = document.querySelectorAll('#student-subject-checkbox-grid input[type="checkbox"]:checked').length;
+            const countEl = document.getElementById('selected-subject-count');
+            if (countEl) countEl.innerText = `${count} Selected`;
+        }
+
+        function submitStudentSubjects() {
+            if (!appState.activeStudent) return;
+            if (appState.activeStudent.registeredSubjects.length === 0) {
+                alert("Please select at least one subject before finalizing!");
+                return;
+            }
+            appState.activeStudent.isLocked = true;
+            const idx = appState.students.findIndex(s => s.id === appState.activeStudent.id);
+            if (idx !== -1) appState.students[idx].isLocked = true;
+            saveState();
+            alert("Subject registration finalized and locked successfully!");
+            renderStudentDashboard();
+        }
+
+        function openUnlockPaymentModal() {
+            document.getElementById('payment-modal').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('payment-modal').classList.add('hidden');
+        }
+
+        function processUnlockPayment() {
+            if (!appState.activeStudent) return;
+            appState.activeStudent.isLocked = false;
+            const idx = appState.students.findIndex(s => s.id === appState.activeStudent.id);
+            if (idx !== -1) appState.students[idx].isLocked = false;
+            saveState();
+            closePaymentModal();
+            alert("Payment of ₦5,000 successful! Your subject selections have been unlocked for editing.");
+            renderStudentDashboard();
+        }
+
+        // RENDER STUDENT SCORES TABLE
+        function renderStudentScoresTable() {
+            const student = appState.activeStudent;
+            const tbody = document.getElementById('student-scores-table-body');
+            if (!tbody || !student) return;
+
+            const total = student.totalFee || 150000;
+            const paid = student.paidFee || 0;
+            const isFullyPaid = paid >= total;
+
+            // Check if fees are completed or special grant is active
+            if (!isFullyPaid && !student.grantReportAccess) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="p-6 text-center bg-rose-950/20 text-rose-300">
+                            <div class="flex flex-col items-center justify-center space-y-2">
+                                <i class="fa-solid fa-lock text-2xl text-rose-400"></i>
+                                <p class="font-bold text-sm">Term Gradebook & Scores Locked</p>
+                                <p class="text-xs text-slate-400">Please complete your tuition fee balance (Balance: ₦${Math.max(0, total - paid).toLocaleString()}) to view your term gradebook and scores.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            if (student.registeredSubjects.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500 italic">No registered subjects found. Select subjects above to enroll.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = student.registeredSubjects.map(subj => {
+                const sub = appState.submissions.find(s => s.studentId === student.id && s.subject === subj);
+                if (!sub) {
+                    return `
+                        <tr>
+                            <td class="p-3 font-semibold text-white">${subj}</td>
+                            <td class="p-3 text-slate-500 font-mono">-</td>
+                            <td class="p-3 text-slate-500 font-mono">-</td>
+                            <td class="p-3 text-slate-500 font-mono">-</td>
+                            <td class="p-3 text-slate-500 font-mono">-</td>
+                            <td class="p-3 text-slate-500 font-mono">-</td>
+                            <td class="p-3 text-slate-500 italic">Pending teacher evaluation</td>
+                            <td class="p-3"><span class="px-2 py-0.5 bg-slate-800 text-slate-400 rounded-full text-[10px] font-bold">Unsubmitted</span></td>
+                        </tr>
+                    `;
+                }
+
+                const totalScore = (sub.hw || 0) + (sub.test || 0) + (sub.exam || 0);
+                const grade = calculateTermGrade(totalScore);
+                const isApproved = sub.status === 'Approved';
+
+                return `
+                    <tr>
+                        <td class="p-3 font-semibold text-white">${subj}</td>
+                        <td class="p-3 font-mono text-amber-300">${sub.hw || 0}</td>
+                        <td class="p-3 font-mono text-amber-300">${sub.test || 0}</td>
+                        <td class="p-3 font-mono text-amber-300">${sub.exam || 0}</td>
+                        <td class="p-3 font-mono font-bold text-white">${totalScore}</td>
+                        <td class="p-3 font-bold font-mono text-amber-400">${grade}</td>
+                        <td class="p-3 text-slate-300 italic">${sub.notes || 'No remarks added'}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isApproved ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}">
+                                ${sub.status}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // TERM GRADE CALCULATOR
+        function calculateTermGrade(score) {
+            if (score >= 75) return 'A1';
+            if (score >= 70) return 'B2';
+            if (score >= 65) return 'B3';
+            if (score >= 60) return 'C4';
+            if (score >= 55) return 'C5';
+            if (score >= 50) return 'C6';
+            if (score >= 45) return 'D7';
+            if (score >= 40) return 'E8';
+            return 'F9';
+        }
+
+        function checkAndOpenReportCard(actionType) {
+            const student = appState.activeStudent;
+            if (!student) return;
+
+            const total = student.totalFee || 150000;
+            const paid = student.paidFee || 0;
+            const isFullyPaid = paid >= total;
+
+            if (!isFullyPaid && !student.grantReportAccess) {
+                document.getElementById('res-total-fee').innerText = `₦${total.toLocaleString()}`;
+                document.getElementById('res-paid-fee').innerText = `₦${paid.toLocaleString()}`;
+                document.getElementById('res-bal-fee').innerText = `₦${Math.max(0, total - paid).toLocaleString()}`;
+                document.getElementById('tuition-restriction-modal').classList.remove('hidden');
+                return;
+            }
+
+            openReportCardModal();
+        }
+
+        function closeTuitionRestrictionModal() {
+            document.getElementById('tuition-restriction-modal').classList.add('hidden');
+        }
+
+        function openReportCardModal() {
+            document.getElementById('report-card-modal').classList.remove('hidden');
+            renderReportCardByTerm();
+        }
+
+        // RENDER REPORT CARD BY SELECTED TERM
+        function renderReportCardByTerm() {
+            const student = appState.activeStudent;
+            if (!student) return;
+
+            const selectedTerm = document.getElementById('report-term-selector')?.value || "1st Term";
+
+            document.getElementById('rep-student-name').innerText = student.fullname;
+            document.getElementById('rep-student-id').innerText = student.admissionId;
+            document.getElementById('rep-student-class').innerText = student.classGrade;
+            document.getElementById('rep-student-gender').innerText = student.gender || 'Male';
+            
+            const sheetPhoto = document.getElementById('rep-student-photo-sheet');
+            if (sheetPhoto) {
+                sheetPhoto.src = student.photo || "https://placehold.co/120x120/1e293b/f59e0b?text=Passport";
+            }
+
+            const thead = document.getElementById('printable-report-thead');
+            const tbody = document.getElementById('printable-report-tbody');
+
+            if (selectedTerm === "3rd Term") {
+                thead.innerHTML = `
+                    <th class="p-2 border border-slate-400">Subject</th>
+                    <th class="p-2 border border-slate-400">1st Term (100)</th>
+                    <th class="p-2 border border-slate-400">2nd Term (100)</th>
+                    <th class="p-2 border border-slate-400">3rd Term (100)</th>
+                    <th class="p-2 border border-slate-400">Cumulative Avg (%)</th>
+                    <th class="p-2 border border-slate-400">Term Grade</th>
+                `;
+            } else {
+                thead.innerHTML = `
+                    <th class="p-2 border border-slate-400">Subject</th>
+                    <th class="p-2 border border-slate-400">Homework (10)</th>
+                    <th class="p-2 border border-slate-400">Class Test (20)</th>
+                    <th class="p-2 border border-slate-400">Exam (70)</th>
+                    <th class="p-2 border border-slate-400">Total Score (100)</th>
+                    <th class="p-2 border border-slate-400">Term Grade</th>
+                `;
+            }
+
+            let totalScoreAcc = 0;
+            let count = 0;
+
+            if (student.registeredSubjects.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No registered subjects found.</td></tr>`;
+            } else {
+                tbody.innerHTML = student.registeredSubjects.map(subj => {
+                    const termSub = appState.submissions.find(s => s.studentId === student.id && s.subject === subj && s.term === selectedTerm);
+
+                    if (selectedTerm === "3rd Term") {
+                        const sub1 = appState.submissions.find(s => s.studentId === student.id && s.subject === subj && s.term === "1st Term");
+                        const sub2 = appState.submissions.find(s => s.studentId === student.id && s.subject === subj && s.term === "2nd Term");
+                        const sub3 = termSub;
+
+                        const sc1 = sub1 ? (sub1.hw || 0) + (sub1.test || 0) + (sub1.exam || 0) : 0;
+                        const sc2 = sub2 ? (sub2.hw || 0) + (sub2.test || 0) + (sub2.exam || 0) : 0;
+                        const sc3 = sub3 ? (sub3.hw || 0) + (sub3.test || 0) + (sub3.exam || 0) : 0;
+
+                        const avg = Math.round((sc1 + sc2 + sc3) / 3);
+                        const grade = calculateTermGrade(avg);
+                        totalScoreAcc += avg;
+                        count++;
+
+                        return `
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 font-bold text-slate-900 border border-slate-300">${subj}</td>
+                                <td class="p-2 border border-slate-300 font-mono">${sc1}</td>
+                                <td class="p-2 border border-slate-300 font-mono">${sc2}</td>
+                                <td class="p-2 border border-slate-300 font-mono">${sc3}</td>
+                                <td class="p-2 border border-slate-300 font-mono font-extrabold text-slate-900">${avg}%</td>
+                                <td class="p-2 border border-slate-300 font-mono font-bold text-amber-700">${grade}</td>
+                            </tr>
+                        `;
+                    } else {
+                        const hw = termSub ? termSub.hw || 0 : 0;
+                        const test = termSub ? termSub.test || 0 : 0;
+                        const exam = termSub ? termSub.exam || 0 : 0;
+                        const tot = hw + test + exam;
+                        const grade = calculateTermGrade(tot);
+                        totalScoreAcc += tot;
+                        count++;
+
+                        return `
+                            <tr class="border-b border-slate-300">
+                                <td class="p-2 font-bold text-slate-900 border border-slate-300">${subj}</td>
+                                <td class="p-2 border border-slate-300 font-mono">${hw}</td>
+                                <td class="p-2 border border-slate-300 font-mono">${test}</td>
+                                <td class="p-2 border border-slate-300 font-mono">${exam}</td>
+                                <td class="p-2 border border-slate-300 font-mono font-extrabold text-slate-900">${tot}</td>
+                                <td class="p-2 border border-slate-300 font-mono font-bold text-amber-700">${grade}</td>
+                            </tr>
+                        `;
+                    }
+                }).join('');
+            }
+
+            const overallAvg = count > 0 ? (totalScoreAcc / count).toFixed(1) : "0.0";
+            const overallGrade = calculateTermGrade(parseFloat(overallAvg));
+
+            document.getElementById('rep-overall-avg').innerText = `${overallAvg}%`;
+            document.getElementById('rep-overall-grade').innerText = overallGrade;
+
+            const promoBox = document.getElementById('rep-promotion-box');
+            const promoBadge = document.getElementById('rep-promotion-badge');
+
+            if (selectedTerm === "3rd Term") {
+                if (promoBox) promoBox.classList.remove('hidden');
+                const isPassed = parseFloat(overallAvg) >= 45;
+                if (promoBadge) {
+                    promoBadge.innerText = isPassed ? "PROMOTED TO NEXT CLASS" : "NOT PROMOTED / HELD BACK";
+                    promoBadge.className = isPassed ? "px-3 py-1 bg-emerald-600 text-white font-extrabold rounded-full text-xs uppercase" : "px-3 py-1 bg-rose-600 text-white font-extrabold rounded-full text-xs uppercase";
+                }
+            } else {
+                if (promoBox) promoBox.classList.add('hidden');
+            }
+        }
+
+        function closeReportCardModal() {
+            document.getElementById('report-card-modal').classList.add('hidden');
+        }
+
+        function printReportCard() {
+            window.print();
+        }
+
+        // =====================================
+        // TEACHER PORTAL LOGIC
+        // =====================================
+        function renderTeacherSignUpFormFields() {
+            const classContainer = document.getElementById('teacher-class-checkboxes');
+            const subjectContainer = document.getElementById('teacher-subject-checkboxes');
+            if (!classContainer || !subjectContainer) return;
+
+            classContainer.innerHTML = ALL_CLASSES.map(c => `
+                <label class="flex items-center gap-2 bg-slate-900 p-2 rounded-xl border border-slate-800 text-xs text-slate-200 cursor-pointer hover:border-indigo-500/40">
+                    <input type="checkbox" name="teacher-class" value="${c}" class="w-4 h-4 text-indigo-500 rounded bg-slate-950 border-slate-700">
+                    <span>${c}</span>
+                </label>
+            `).join('');
+
+            subjectContainer.innerHTML = SUBJECT_DATABASE.map(subj => `
+                <label class="flex items-center gap-2 bg-slate-900 p-2 rounded-xl border border-slate-800 text-xs text-slate-200 cursor-pointer hover:border-indigo-500/40">
+                    <input type="checkbox" name="teacher-subject" value="${subj}" class="w-4 h-4 text-indigo-500 rounded bg-slate-950 border-slate-700">
+                    <span>${subj}</span>
+                </label>
+            `).join('');
+        }
+
+        function toggleSelectAllTeacherSubjects() {
+            const checkboxes = document.querySelectorAll('input[name="teacher-subject"]');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+        }
+
+        function handleTeacherSignUp(e) {
+            e.preventDefault();
+            purgeExpiredCodes();
+            const codeInput = document.getElementById('teacher-reg-auth-code').value.trim().toUpperCase();
+            
+            const codeObj = appState.codes.find(c => c.code.toUpperCase() === codeInput && c.type === 'teacher' && c.status === 'Active');
+            if (!codeObj) {
+                alert("Invalid, expired, or used Teacher Authorization Code! Access codes expire after 5 days.");
+                return;
+            }
+
+            const fullname = document.getElementById('teacher-reg-fullname').value.trim();
+            const email = document.getElementById('teacher-reg-email').value.trim().toLowerCase();
+            const password = document.getElementById('teacher-reg-password').value;
+            const employmentType = document.getElementById('teacher-reg-employment-type').value;
+
+            const selectedClasses = Array.from(document.querySelectorAll('input[name="teacher-class"]:checked')).map(cb => cb.value);
+            const selectedSubjects = Array.from(document.querySelectorAll('input[name="teacher-subject"]:checked')).map(cb => cb.value);
+
+            if (selectedClasses.length === 0 || selectedSubjects.length === 0) {
+                alert("Please select at least one assigned class and teaching subject!");
+                return;
+            }
+
+            if (appState.teachers.some(t => t.email.toLowerCase() === email)) {
+                alert("A teacher with this email already exists!");
+                return;
+            }
+
+            codeObj.status = "Used";
+
+            const newTeacher = {
+                id: 'TCH-' + Math.floor(1000 + Math.random() * 9000),
+                fullname: fullname,
+                email: email,
+                password: password,
+                employmentType: employmentType,
+                assignedClasses: selectedClasses,
+                assignedSubjects: selectedSubjects,
+                createdAt: new Date().toLocaleDateString()
+            };
+
+            appState.teachers.push(newTeacher);
+            appState.activeTeacher = newTeacher;
+            saveState();
+
+            alert("Teacher Portal Registration Successful!");
+            renderTeacherDashboard();
+        }
+
+        function handleTeacherSignIn(e) {
+            e.preventDefault();
+            const email = document.getElementById('teacher-login-email').value.trim().toLowerCase();
+            const password = document.getElementById('teacher-login-password').value;
+
+            const teacher = appState.teachers.find(t => t.email.toLowerCase() === email);
+            if (!teacher) {
+                alert("No teacher account found with this email!");
+                return;
+            }
+            if (teacher.password !== password) {
+                alert("Invalid password entered.");
+                return;
+            }
+
+            appState.activeTeacher = teacher;
+            saveState();
+            renderTeacherDashboard();
+        }
+
+        function renderTeacherDashboard() {
+            const teacher = appState.activeTeacher;
+            if (!teacher) return;
+
+            document.getElementById('teacher-auth-card').classList.add('hidden');
+            document.getElementById('teacher-dashboard').classList.remove('hidden');
+
+            document.getElementById('dash-teacher-name').innerText = teacher.fullname;
+            document.getElementById('dash-teacher-type').innerText = teacher.employmentType;
+            document.getElementById('dash-teacher-classes').innerText = `Assigned Classes: ${teacher.assignedClasses.join(', ')}`;
+            document.getElementById('dash-teacher-subjects').innerText = `Subjects: ${teacher.assignedSubjects.join(', ')}`;
+
+            // Populate filter dropdowns
+            const classSelect = document.getElementById('teacher-filter-class');
+            const subjectSelect = document.getElementById('teacher-filter-subject');
+
+            classSelect.innerHTML = teacher.assignedClasses.map(c => `<option value="${c}">${c}</option>`).join('');
+            subjectSelect.innerHTML = teacher.assignedSubjects.map(s => `<option value="${s}">${s}</option>`).join('');
+
+            renderTeacherGradebook();
+        }
+
+        function renderTeacherGradebook() {
+            const teacher = appState.activeTeacher;
+            const tbody = document.getElementById('teacher-gradebook-table-body');
+            if (!teacher || !tbody) return;
+
+            const term = document.getElementById('teacher-filter-term').value;
+            const selClass = document.getElementById('teacher-filter-class').value;
+            const selSubject = document.getElementById('teacher-filter-subject').value;
+
+            // Filter students in this class who registered for this subject
+            const enrolledStudents = appState.students.filter(s => 
+                s.classGrade === selClass && s.registeredSubjects.includes(selSubject)
+            );
+
+            if (enrolledStudents.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">No students found in ${selClass} registered for ${selSubject}.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = enrolledStudents.map(student => {
+                const sub = appState.submissions.find(s => s.studentId === student.id && s.subject === selSubject && s.term === term) || {
+                    hw: 0, test: 0, exam: 0, notes: '', status: 'Draft'
+                };
+
+                return `
+                    <tr class="border-b border-slate-800/60">
+                        <td class="p-3 font-bold text-white">${student.fullname}</td>
+                        <td class="p-3 font-mono text-slate-400">${student.admissionId}</td>
+                        <td class="p-3"><input type="number" min="0" max="10" id="hw-${student.id}" value="${sub.hw}" class="w-16 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-amber-300 font-mono text-xs"></td>
+                        <td class="p-3"><input type="number" min="0" max="20" id="test-${student.id}" value="${sub.test}" class="w-16 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-amber-300 font-mono text-xs"></td>
+                        <td class="p-3"><input type="number" min="0" max="70" id="exam-${student.id}" value="${sub.exam}" class="w-16 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-amber-300 font-mono text-xs"></td>
+                        <td class="p-3"><input type="text" id="notes-${student.id}" value="${sub.notes || ''}" placeholder="Performance note..." class="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-white text-xs"></td>
+                        <td class="p-3 text-right">
+                            <button onclick="saveStudentGrade('${student.id}', '${selSubject}', '${term}')" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-xs transition shadow">
+                                Submit Score
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function saveStudentGrade(studentId, subject, term) {
+            const hw = parseFloat(document.getElementById(`hw-${studentId}`).value) || 0;
+            const test = parseFloat(document.getElementById(`test-${studentId}`).value) || 0;
+            const exam = parseFloat(document.getElementById(`exam-${studentId}`).value) || 0;
+            const notes = document.getElementById(`notes-${studentId}`).value.trim();
+
+            if (hw > 10 || test > 20 || exam > 70) {
+                alert("Score validation error: Homework max is 10, Test max is 20, Exam max is 70.");
+                return;
+            }
+
+            let existingIndex = appState.submissions.findIndex(s => s.studentId === studentId && s.subject === subject && s.term === term);
+            
+            const submissionData = {
+                id: 'SUB-' + Math.floor(1000 + Math.random() * 9000),
+                studentId: studentId,
+                teacherId: appState.activeTeacher.id,
+                subject: subject,
+                term: term,
+                hw: hw,
+                test: test,
+                exam: exam,
+                notes: notes,
+                status: 'Pending Admin Approval'
+            };
+
+            if (existingIndex !== -1) {
+                appState.submissions[existingIndex] = submissionData;
+            } else {
+                appState.submissions.push(submissionData);
+            }
+
+            saveState();
+            alert("Score successfully submitted for administrative review!");
+            renderTeacherGradebook();
+        }
+
+        // =====================================
+        // ADMIN PORTAL LOGIC
+        // =====================================
+        function renderAdminDashboard() {
+            const admin = appState.activeAdmin;
+            if (!admin) return;
+
+            document.getElementById('admin-auth-card').classList.add('hidden');
+            document.getElementById('admin-dashboard-panel').classList.remove('hidden');
+
+            document.getElementById('dash-admin-name').innerText = admin.fullname;
+            document.getElementById('dash-admin-email').innerText = admin.email;
+            document.getElementById('dash-admin-role').innerText = admin.isPrimary ? "Primary Owner" : "Sub-Admin";
+
+            const subAdminCard = document.getElementById('sub-admin-management-card');
+            if (admin.isPrimary) {
+                subAdminCard.classList.remove('hidden');
+                renderSubAdminApprovals();
+                renderAdminTeachersTable();
+                renderAdminStudentPaymentsTable();
+            } else {
+                subAdminCard.classList.add('hidden');
+            }
+
+            renderAdminCodesList();
+            renderAdminPendingScores();
+        }
+
+        function renderSubAdminApprovals() {
+            const tbody = document.getElementById('sub-admin-approval-table');
+            if (!tbody) return;
+
+            const subAdmins = appState.admins.filter(a => !a.isPrimary);
+            if (subAdmins.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-500 italic">No sub-admin accounts registered yet.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = subAdmins.map(adm => `
+                <tr class="border-b border-slate-800/60">
+                    <td class="p-2.5 font-bold text-white">${adm.fullname}</td>
+                    <td class="p-2.5 text-slate-400">${adm.email}</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${adm.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${adm.status}</span></td>
+                    <td class="p-2.5 text-right space-x-2">
+                        ${adm.status !== 'Approved' ? `<button onclick="approveSubAdmin('${adm.id}')" class="px-2 py-1 bg-emerald-600 text-white rounded text-[10px] font-bold">Approve</button>` : ''}
+                        <button onclick="deleteSubAdmin('${adm.id}')" class="px-2 py-1 bg-rose-600 text-white rounded text-[10px] font-bold">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function approveSubAdmin(id) {
+            const adm = appState.admins.find(a => a.id === id);
+            if (adm) {
+                adm.status = "Approved";
+                saveState();
+                renderSubAdminApprovals();
+            }
+        }
+
+        function deleteSubAdmin(id) {
+            if (confirm("Are you sure you want to delete this sub-admin?")) {
+                appState.admins = appState.admins.filter(a => a.id !== id);
+                saveState();
+                renderSubAdminApprovals();
+            }
+        }
+
+        function generateNewAccessCode(type) {
+            const prefix = type === 'student' ? 'DGS-STU-' : 'DGS-TCH-';
+            const newCode = prefix + Math.floor(1000 + Math.random() * 9000) + '-' + Math.random().toString(36).substring(2, 4).toUpperCase();
+            
+            appState.codes.push({
+                code: newCode,
+                type: type,
+                status: 'Active',
+                createdAt: Date.now()
+            });
+
+            saveState();
+            renderAdminCodesList();
+            alert(`Generated new ${type} authorization code: ${newCode}`);
+        }
+
+        function renderAdminCodesList() {
+            purgeExpiredCodes();
+            const container = document.getElementById('admin-codes-list');
+            if (!container) return;
+
+            if (appState.codes.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 italic">No active authorization codes.</p>`;
+                return;
+            }
+
+            const now = Date.now();
+            container.innerHTML = appState.codes.map(c => {
+                const ageDays = Math.floor((now - (c.createdAt || now)) / (1000 * 60 * 60 * 24));
+                const daysLeft = Math.max(0, 5 - ageDays);
+
+                return `
+                    <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <div>
+                            <span class="font-mono font-bold text-xs text-amber-400 block">${c.code}</span>
+                            <span class="text-[10px] text-slate-400 uppercase font-bold">${c.type} • <span class="text-indigo-400">${daysLeft} day(s) left</span></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${c.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-400'}">${c.status}</span>
+                            <button onclick="deleteAuthCode('${c.code}')" class="text-rose-400 hover:text-rose-300 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteAuthCode(code) {
+            appState.codes = appState.codes.filter(c => c.code !== code);
+            saveState();
+            renderAdminCodesList();
+        }
+
+        // TEACHER ROSTER MANAGEMENT DESK
+        function renderAdminTeachersTable() {
+            const tbody = document.getElementById('admin-teachers-table');
+            if (!tbody) return;
+
+            if (appState.teachers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No teachers registered yet.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = appState.teachers.map(t => `
+                <tr class="border-b border-slate-800/60">
+                    <td class="p-3 font-bold text-white">${t.fullname}</td>
+                    <td class="p-3 text-slate-400">${t.email}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded text-[10px] font-bold">${t.employmentType}</span></td>
+                    <td class="p-3 text-slate-300">${(t.assignedClasses || []).join(', ')}</td>
+                    <td class="p-3 text-slate-300">${(t.assignedSubjects || []).join(', ')}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteTeacherAccount('${t.id}')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg text-xs transition">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteTeacherAccount(id) {
+            if (confirm("Are you sure you want to delete this teacher account?")) {
+                appState.teachers = appState.teachers.filter(t => t.id !== id);
+                if (appState.activeTeacher && appState.activeTeacher.id === id) {
+                    appState.activeTeacher = null;
+                }
+                saveState();
+                renderAdminTeachersTable();
+            }
+        }
+
+        function purgeAllTeachers() {
+            if (confirm("Are you sure you want to permanently delete ALL registered teachers?")) {
+                appState.teachers = [];
+                appState.activeTeacher = null;
+                saveState();
+                renderAdminTeachersTable();
+            }
+        }
+
+        // STUDENT DIRECTORY & FEE ACKNOWLEDGMENT DESK
+        function renderAdminStudentPaymentsTable() {
+            const tbody = document.getElementById('admin-student-payments-table');
+            if (!tbody) return;
+
+            if (appState.students.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No students registered yet.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = appState.students.map(s => {
+                const total = s.totalFee || 150000;
+                const paid = s.paidFee || 0;
+                const isComplete = paid >= total;
+
+                return `
+                    <tr class="border-b border-slate-800/60">
+                        <td class="p-3 font-bold text-white">${s.fullname}</td>
+                        <td class="p-3 font-mono text-amber-400">${s.admissionId}</td>
+                        <td class="p-3 text-slate-300">${s.classGrade}</td>
+                        <td class="p-3 font-mono">
+                            <span class="text-white">Total: ₦${total.toLocaleString()}</span><br>
+                            <span class="text-amber-400">Paid: ₦${paid.toLocaleString()}</span>
+                        </td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isComplete ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">
+                                ${isComplete ? 'Unlocked (Paid)' : (s.grantReportAccess ? 'Unlocked (Owner Grant)' : 'Locked (Balance Due)')}
+                            </span>
+                        </td>
+                        <td class="p-3 text-right space-x-2">
+                            <button onclick="openEditTuitionModal('${s.id}')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition">Manage Fee</button>
+                            <button onclick="deleteStudentAccount('${s.id}')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg text-xs transition">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openEditTuitionModal(studentId) {
+            const student = appState.students.find(s => s.id === studentId);
+            if (!student) return;
+
+            document.getElementById('tuition-edit-student-id').value = student.id;
+            document.getElementById('tuition-edit-name').value = student.fullname;
+            document.getElementById('tuition-edit-total').value = student.totalFee || 150000;
+            document.getElementById('tuition-edit-paid').value = student.paidFee || 0;
+            document.getElementById('tuition-edit-grant').checked = student.grantReportAccess || false;
+
+            document.getElementById('edit-tuition-modal').classList.remove('hidden');
+        }
+
+        function closeEditTuitionModal() {
+            document.getElementById('edit-tuition-modal').classList.add('hidden');
+        }
+
+        function handleSaveStudentTuition(e) {
+            e.preventDefault();
+            const studentId = document.getElementById('tuition-edit-student-id').value;
+            const total = parseFloat(document.getElementById('tuition-edit-total').value) || 0;
+            const paid = parseFloat(document.getElementById('tuition-edit-paid').value) || 0;
+            const grant = document.getElementById('tuition-edit-grant').checked;
+
+            const student = appState.students.find(s => s.id === studentId);
+            if (student) {
+                student.totalFee = total;
+                student.paidFee = paid;
+                student.grantReportAccess = grant;
+
+                if (appState.activeStudent && appState.activeStudent.id === studentId) {
+                    appState.activeStudent = student;
+                }
+
+                saveState();
+                closeEditTuitionModal();
+                renderAdminStudentPaymentsTable();
+                alert("Student tuition fee and access permissions successfully updated!");
+            }
+        }
+
+        function deleteStudentAccount(id) {
+            if (confirm("Are you sure you want to delete this student record?")) {
+                appState.students = appState.students.filter(s => s.id !== id);
+                // Automatically clear out any associated submissions/approvals for this student
+                appState.submissions = appState.submissions.filter(sub => sub.studentId !== id);
+                
+                if (appState.activeStudent && appState.activeStudent.id === id) {
+                    appState.activeStudent = null;
+                }
+                saveState();
+                renderAdminStudentPaymentsTable();
+                renderAdminPendingScores(); // Refresh admin pending reviews desk
+            }
+        }
+
+        function purgeAllStudents() {
+            if (confirm("Are you sure you want to permanently delete ALL student records?")) {
+                appState.students = [];
+                // Clear all submissions as well
+                appState.submissions = [];
+                appState.activeStudent = null;
+                saveState();
+                renderAdminStudentPaymentsTable();
+                renderAdminPendingScores(); // Refresh admin pending reviews desk
+            }
+        }
+
+        function renderAdminPendingScores() {
+            const tbody = document.getElementById('admin-pending-scores-table-body');
+            if (!tbody) return;
+
+            // Automatically filter out or flag entries with deleted/unowned students
+            const validSubmissions = appState.submissions.filter(sub => {
+                const studentExists = appState.students.some(s => s.id === sub.studentId);
+                return studentExists; // Clean up orphan submissions automatically
+            });
+
+            // Update state if orphan submissions were removed
+            if (validSubmissions.length !== appState.submissions.length) {
+                appState.submissions = validSubmissions;
+                saveState();
+            }
+
+            if (appState.submissions.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">No score submissions found in the system.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = appState.submissions.map(sub => {
+                const student = appState.students.find(s => s.id === sub.studentId);
+                const teacher = appState.teachers.find(t => t.id === sub.teacherId);
+                const totalScore = (sub.hw || 0) + (sub.test || 0) + (sub.exam || 0);
+
+                return `
+                    <tr class="border-b border-slate-800/60">
+                        <td class="p-3 font-bold ${student ? 'text-white' : 'text-rose-400'}">${student ? student.fullname : 'Unowned / Deleted Student'}</td>
+                        <td class="p-3 text-slate-300">${student ? student.classGrade : 'N/A'} - <span class="text-amber-400 font-semibold">${sub.subject} (${sub.term || '1st Term'})</span></td>
+                        <td class="p-3 text-slate-400">${teacher ? teacher.fullname : 'Staff / Unassigned'}</td>
+                        <td class="p-3 font-mono text-amber-300">HW:${sub.hw} | Test:${sub.test} | Exam:${sub.exam} = <b>${totalScore}</b></td>
+                        <td class="p-3 text-slate-300 italic">${sub.notes || 'No remarks'}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 rounded-full text-[10px] font-bold">${sub.status}</span></td>
+                        <td class="p-3 text-right space-x-2">
+                            ${sub.status !== 'Approved' ? `<button onclick="approveSubmission('${sub.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition">Approve</button>` : ''}
+                            <button onclick="deleteSubmission('${sub.id}')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg text-xs transition">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function approveSubmission(id) {
+            const sub = appState.submissions.find(s => s.id === id);
+            if (sub) {
+                sub.status = "Approved";
+                saveState();
+                renderAdminPendingScores();
+                alert("Score officially approved and published to student report portal!");
+            }
+        }
+
+        function deleteSubmission(id) {
+            if (confirm("Are you sure you want to delete this score submission?")) {
+                appState.submissions = appState.submissions.filter(s => s.id !== id);
+                saveState();
+                renderAdminPendingScores();
+            }
+        }
+
+        function purgeOrphanSubmissions() {
+            const initialCount = appState.submissions.length;
+            appState.submissions = appState.submissions.filter(sub => {
+                return appState.students.some(s => s.id === sub.studentId);
+            });
+            saveState();
+            renderAdminPendingScores();
+            const cleaned = initialCount - appState.submissions.length;
+            alert(cleaned > 0 ? `Successfully cleared ${cleaned} unowned / orphan score record(s)!` : "No unowned score records found.");
+        }
+    </script>
 </body>
 </html>
